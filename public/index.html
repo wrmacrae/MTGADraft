@@ -245,10 +245,10 @@
 					<h2>Your Booster</h2><span>Booster #{{ draftRound }}, Pick {{ ((deck.length + sideboard.length) % cardsPerBooster) + 1 }}</span><span v-show="pickTimer >= 0" :class="{redbg: pickTimer <= 10}" id="chrono"><i class="fas fa-clock"></i> {{ pickTimer }}</span>
 					<input type="button" @click="pickCard" value="Confirm Pick" v-if="selectedCard != undefined"/>
 				</div>
-				<div class="booster card-container">
-					<div is="card" v-for="(card, index) in booster" v-bind:key="`${index}-${card.id}`" v-bind:card="card" v-bind:language="language" v-bind:selectcard="selectCard" v-bind:ondblclick="doubleClickCard" v-bind:selected="selectedCard === card">
+				<draggable class="booster card-container" :group="{name: 'cardColumn', put: false}" v-model="booster" :move="boosterMoveEvent" @change="pickByDragNDrop" >
+					<div is="card" v-for="(card, index) in booster" :key="card.uniqueID" v-bind:card="card" v-bind:language="language" v-bind:selectcard="selectCard" v-bind:ondblclick="doubleClickCard" v-bind:selected="selectedCard === card">
 					</div>
-				</div>
+				</draggable>
 			</div>
 			<div v-show="draftingState == DraftState.Waiting" class="pick-waiting">
 				<span class="spinner"></span><span v-show="pickTimer >= 0">(<i class="fas fa-clock"></i> {{ pickTimer }})</span> Waiting for other players to pick...

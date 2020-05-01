@@ -676,6 +676,33 @@ var app = new Vue({
 			this.sideboard.push(card);
 			this.sideboardColumn[Math.min(card.cmc, this.sideboardColumn.length - 1)].push(card);
 		},
+		boosterMoveEvent: function (e) {
+			// Trying to cancel drag & drop operation when the dragged card is not there anymore (frocePick as been called in the mean time)
+			// This seems to work, but (FIXME) the bosster display is completly glitched from booster 2, no idea what's happening!
+			if (this.booster[e.draggedContext.index] === e.draggedContext.element) return true;
+			return false;
+		},
+		pickByDragNDrop: function (e) {
+			// FIXME: Dragging while receiving the forcePick instruction will allow to pick twice (and brick the front end)
+			// I don't know how to handle this. Also returning false at this point will NOT cancel the drap&drop operation.
+			// Drag & Drop operations are just janking in general.
+			if (e.removed) {
+				const card = e.removed.element;
+				if (this.draftingState != DraftState.Picking || !card.id) return false;
+
+				if (this.socket.disconnected) {
+					this.disconnectedReminder();
+					return;
+				}
+
+				this.socket.emit("pickCard", card.id, (answer) => {
+					if (answer.code !== 0) console.log(`pickCard: Unexpected answer:`, anwser);
+				});
+				this.draftingState = DraftState.Waiting;
+				// Adding the card to the deck/sideboard will be handled by the corresponding draggable events
+				this.selectedCard = undefined;
+			}
+		},
 		pickCard: function () {
 			if (this.draftingState != DraftState.Picking || !this.selectedCard) return;
 

@@ -39,6 +39,7 @@ AWS_ENDPOINT=http://localhost:8000
 
 ---
 
+-   Implement drag & drop for booster cards
 -   Revamp menu: Can take whole screen and disappear during drafting, (add a button to have it reappear?)
 -   Display foils as... foils in front end?
 
