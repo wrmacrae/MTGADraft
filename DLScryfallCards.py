@@ -12,6 +12,7 @@ from itertools import groupby
 BulkDataURL = 'https://archive.scryfall.com/json/scryfall-all-cards.json'
 BulkDataPath = 'data/scryfall-all-cards.json'
 BulkDataArenaPath = 'data/BulkArena.json'
+ImageFixPath = 'data/ImageFix.json'
 FinalDataPath = 'public/data/MTGACards.json'
 SetsInfosPath = 'public/data/SetsInfos.json'
 RatingsSources = [
@@ -47,6 +48,7 @@ ForceDownload = len(sys.argv) > 1 and sys.argv[1].lower() == "dl"
 ForceExtract = len(sys.argv) > 1 and sys.argv[1].lower() == "extract"
 ForceCache = len(sys.argv) > 1 and sys.argv[1].lower() == "cache"
 ForceRatings = len(sys.argv) > 1 and sys.argv[1].lower() == "ratings"
+ForceImageFix = len(sys.argv) > 1 and sys.argv[1].lower() == "imagefix"
 
 MTGALocFile = "S:\MtGA\MTGA_Data\Downloads\Data\data_loc_d7ec9d0fe5c0df6cdc1bc55ab8d24f60.mtga"
 MTGACardsFile = "S:\MtGA\MTGA_Data\Downloads\Data\data_cards_8389ad05decfccb69a89b895d062f4a2.mtga"
@@ -102,7 +104,6 @@ if not os.path.isfile(BulkDataArenaPath) or ForceExtract:
 		with open(BulkDataArenaPath, 'w') as outfile:
 			json.dump(cards, outfile)
 
-
 CardRatings = {}
 with open('data/ratings_base.json', 'r', encoding="utf8") as file:
 	CardRatings = dict(CardRatings, **json.loads(file.read()))
@@ -125,7 +126,22 @@ else:
 	with open(RatingsDest, 'r', encoding="utf8") as file:
 		CardRatings = dict(CardRatings, **json.loads(file.read()))
 
-if not os.path.isfile(FinalDataPath) or ForceExtract or ForceCache:
+ImageFix = {}
+if not os.path.isfile(ImageFixPath) or ForceImageFix:
+	for s in ['ha1', 'ha2', 'ha3']:
+		data = json.loads('{"has_more": true}')
+		while(data['has_more']):
+			response = requests.get('https://api.scryfall.com/cards/search?order=set&q={}'.format(urllib.parse.urlencode({'e': s})))
+			data = json.loads(response.content)
+			for c in data['data']:
+				ImageFix[c['name']] = c['image_uris']['border_crop']
+	with open(ImageFixPath, 'w', encoding="utf8") as outfile:
+		json.dump(ImageFix, outfile)
+else: 
+	with open(ImageFixPath, 'r', encoding="utf8") as file:
+		ImageFix = json.loads(file.read())
+
+if not os.path.isfile(FinalDataPath) or ForceExtract or ForceCache or ForceImageFix:
 	# Tag non booster card as such
 	print("Requesting non-booster cards list...")
 	NonBoosterCards = []
@@ -187,6 +203,8 @@ if not os.path.isfile(FinalDataPath) or ForceExtract or ForceCache:
 		for k in cards:
 			cards[k]['printed_name'] = translations[k]
 			cards[k]['image_uris'] = translations_img[k]
+			if cards[k]['printed_name']['en'] in ImageFix:
+				cards[k]['image_uris']['en'] = ImageFix[cards[k]['printed_name']['en']]
 		
 		with open(FinalDataPath, 'w', encoding="utf8") as outfile:
 			json.dump(cards, outfile, ensure_ascii=False)

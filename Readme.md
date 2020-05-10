@@ -38,6 +38,7 @@ AWS_ENDPOINT=http://localhost:8000
 
 ---
 
+-   Try to use the updated image for Historic Anthology cards (use a filter? they're on scryfall under HA1/HA2/HA3). Only for the english version! (Fix idea: download HA1/2/3 card data, swap english image (but there's no origin set or arena id in that data)... or just list them all as exceptions?)
 -   Display foils as... foils in front end?
 
 ### Distant Future
