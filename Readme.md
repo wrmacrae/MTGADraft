@@ -9,8 +9,24 @@ Join the discord for development related discussions: https://discord.gg/KYKzx9m
 -   Clone repository
 -   Open repository
 -   Execute `npm install`
--   Execute `npm start`
--   Navigate to `http://localhost:3000/`
+-   Execute `npm start` (starts the node server)
+-   For development, serve the client separately:
+
+```
+	cd client
+	npm run serve
+```
+
+    Navigate to `http://localhost:8080`
+
+-   For production, build the client that will be served by the node server:
+
+```
+	cd client
+	npm run build
+```
+
+    Navigate to `http://localhost:3000/`
 
 ### Setup DynamoDB (local)
 
