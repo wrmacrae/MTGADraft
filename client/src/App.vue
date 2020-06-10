@@ -2615,9 +2615,13 @@ export default {
 			if (this.userID != this.sessionOwner) return;
 			this.socket.emit("boostersPerPlayer", this.boostersPerPlayer);
 		},
+		distributionMode: function () {
+			if (this.userID != this.sessionOwner) return;
+			this.socket.emit("setDistributionMode", this.distributionMode);
+		},
 		customBoosters: function() {
 			if (this.userID != this.sessionOwner) return;
-			this.socket.emit("customBoosters", this.customBoosters);
+			this.socket.emit("setCustomBoosters", this.customBoosters);
 		},
 		bots: function() {
 			if (this.userID != this.sessionOwner) return;
@@ -3299,6 +3303,11 @@ ul.player-list {
 	margin-right: 1em;
 	background: #282828;
 	border-radius: 5px;
+}
+
+.player-list > li.draggable:hover {
+	translate: 0 -3px;
+	box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.75);
 }
 
 .player-name {

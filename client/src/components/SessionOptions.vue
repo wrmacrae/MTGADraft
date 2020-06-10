@@ -218,26 +218,26 @@
 						/>
 					</div>
 				</div>
-				<div
-					class="option-section"
-					v-tooltip.right="{
-						classes: 'option-tooltip',
-						content:
-							'<p>Specify the set of each booster individually. Useful for classic Chaos Draft for example.</p><p>Note: Collections are ignored for each booster with any other value than (Default).</p>',
-					}"
-					v-bind:class="{ disabled: useCustomCardList }"
-				>
+				<div class="option-section" v-bind:class="{ disabled: useCustomCardList }">
 					<div class="option-column-title">
 						Individual Booster Set
 					</div>
-					<div v-for="(value, index) in customBoosters" :key="index" class="line">
-						<label for="customized-booster">Booster #{{ index + 1 }}</label>
-						<select class="right" v-model="customBoosters[index]">
-							<option value="">(Default)</option>
-							<option v-for="code in sets" :key="code" :value="code">
-								{{ setsInfos[code].fullName }}
-							</option>
+					<div class="line" v-tooltip.right="{classes: 'option-tooltip', content: '<p>Controls how the boosters will be distributed.</p><ul><li>Regular: Each player will receive boosters from the same sets and will open them in the same order.</li><li>Shuffle Player Boosters: Each players will receive boosters from the same sets but will open them in a random order.</li><li>Shuffle Booster Pool: Boosters will be randomly handed to each player.</li></ul>'}">
+						<label for="distribution-mode">Distribution Mode</label>
+						<select class="right" v-model="distributionMode" name="distributionMode" id="distribution-mode">
+							<option value="regular">Regular</option>
+							<option value="shufflePlayerBoosters">Shuffle Player Boosters</option>
+							<option value="shuffleBoosterPool">Shuffle Booster Pool</option>
 						</select>
+					</div>
+					<div v-tooltip.right="{classes: 'option-tooltip', content: '<p>Specify the set of each booster individually. Useful for classic Chaos Draft for example.</p><p>Note: Collections are ignored for each booster with any other value than (Default).</p>'}" >
+						<div v-for="(value, index) in customBoosters" class="line">
+							<label for="customized-booster">Booster #{{index+1}}</label>
+							<select class="right" v-model="customBoosters[index]">
+								<option value="">(Default)</option>
+								<option v-for="code in sets" :value="code">{{setsInfos[code].fullName}}</option>
+							</select>
+						</div>
 					</div>
 				</div>
 				<div
