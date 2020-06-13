@@ -1,7 +1,11 @@
 <template>
-	<modal @close="showSessionOptionsDialog = false">
+	<modal @close="$root.modal = ''">
 		<h2 slot="header">Additional Session Options</h2>
-		<div slot="body" class="session-options-container" :class="{ disabled: userID != sessionOwner }">
+		<div
+			slot="body"
+			class="session-options-container"
+			:class="{ disabled: $root.userID != $root.sessionOwner }"
+		>
 			<div class="option-column">
 				<div
 					class="line"
@@ -12,7 +16,7 @@
 				>
 					<label for="is-public">Public</label>
 					<div class="right">
-						<input type="checkbox" v-model="isPublic" id="is-public" />
+						<input type="checkbox" v-model="$root.isPublic" id="is-public" />
 					</div>
 				</div>
 				<div
@@ -24,7 +28,7 @@
 				>
 					<label for="is-owner-player">Session owner is playing</label>
 					<div class="right">
-						<input type="checkbox" v-model="ownerIsPlayer" id="is-owner-player" />
+						<input type="checkbox" v-model="$root.ownerIsPlayer" id="is-owner-player" />
 					</div>
 				</div>
 				<div class="line">
@@ -37,7 +41,7 @@
 							min="1"
 							max="16"
 							step="1"
-							v-model.number="maxPlayers"
+							v-model.number="$root.maxPlayers"
 						/>
 					</div>
 				</div>
@@ -62,7 +66,7 @@
 					</div>
 				</div>
 			</div>
-		-->
+				-->
 				<div
 					class="line"
 					v-tooltip.left="{
@@ -73,12 +77,12 @@
 				>
 					<label for="color-balance">Color Balance</label>
 					<div class="right">
-						<input type="checkbox" v-model="colorBalance" id="color-balance" />
+						<input type="checkbox" v-model="$root.colorBalance" id="color-balance" />
 					</div>
 				</div>
 				<div
 					class="line"
-					v-bind:class="{ disabled: useCustomCardList }"
+					v-bind:class="{ disabled: $root.useCustomCardList }"
 					v-tooltip.left="{
 						classes: 'option-tooltip',
 						content:
@@ -87,12 +91,12 @@
 				>
 					<label for="mythic-promotion">Rare promotion to Mythic</label>
 					<div class="right">
-						<input type="checkbox" v-model="mythicPromotion" id="mythic-promotion" />
+						<input type="checkbox" v-model="$root.mythicPromotion" id="mythic-promotion" />
 					</div>
 				</div>
 				<div
 					class="option-section"
-					v-bind:class="{ disabled: useCustomCardList }"
+					v-bind:class="{ disabled: $root.useCustomCardList }"
 					v-tooltip.left="{
 						classes: 'option-tooltip',
 						content:
@@ -103,6 +107,7 @@
 					<div class="line" v-for="r in ['common', 'uncommon', 'rare']" :key="r">
 						<label :for="'booster-content-' + r" class="capitalized">{{ r }}s</label>
 						<div class="right">
+							<!--
 							<input
 								class="small-number-input"
 								type="number"
@@ -110,14 +115,14 @@
 								min="0"
 								max="16"
 								step="1"
-								v-model.number="boosterContent[r]"
-							/>
+								v-model.number="$root.boosterContent[r]"
+							/>-->
 						</div>
 					</div>
 				</div>
 				<div
 					class="option-section"
-					v-bind:class="{ disabled: useCustomCardList }"
+					v-bind:class="{ disabled: $root.useCustomCardList }"
 					v-tooltip.left="{
 						classes: 'option-tooltip',
 						content:
@@ -135,14 +140,14 @@
 								min="1"
 								max="16"
 								step="1"
-								v-model.number="maxDuplicates[r]"
+								v-model.number="$root.maxDuplicates[r]"
 							/>
 						</div>
 					</div>
 				</div>
 				<div
 					class="line"
-					v-bind:class="{ disabled: useCustomCardList }"
+					v-bind:class="{ disabled: $root.useCustomCardList }"
 					v-tooltip.left="{
 						classes: 'option-tooltip',
 						content:
@@ -151,7 +156,7 @@
 				>
 					<label for="option-foil">Foil</label>
 					<div class="right">
-						<input type="checkbox" v-model="foil" id="option-foil" />
+						<input type="checkbox" v-model="$root.foil" id="option-foil" />
 					</div>
 				</div>
 				<div
@@ -160,10 +165,10 @@
 				>
 					<label for="use-custom-card-list">Use a Custom Card List</label>
 					<div class="right">
-						<input type="checkbox" v-model="useCustomCardList" id="use-custom-card-list" />
+						<input type="checkbox" v-model="$root.useCustomCardList" id="use-custom-card-list" />
 					</div>
 				</div>
-				<div v-bind:class="{ disabled: !useCustomCardList }" class="line">
+				<div v-bind:class="{ disabled: !$root.useCustomCardList }" class="line">
 					<label for="card-list-input">Custom Card List</label>
 					<div class="right">
 						<input
@@ -179,12 +184,12 @@
 						>
 							Upload
 							<i
-								v-if="customCardList.length > 0"
+								v-if="$root.customCardList.length > 0"
 								class="fas fa-check green"
 								v-tooltip="'Card list uploaded.'"
 							></i>
 						</button>
-						<span v-if="customCardList.length > 0">{{ customCardList.length }} cards in list.</span>
+						<span v-if="$root.customCardList.length > 0">{{ $root.customCardList.length }} cards in list.</span>
 					</div>
 				</div>
 				<div class="option-info">
@@ -193,7 +198,10 @@
 					or
 					<a href="https://cubecobra.com/" target="_blank">Cube Cobra</a>
 					to craft your list, export it to .txt then upload it here.
-					<a href="cubeformat.html" target="_blank">Click Here for more information.</a>
+					<a
+						href="cubeformat.html"
+						target="_blank"
+					>Click Here for more information.</a>
 				</div>
 			</div>
 			<div class="option-column">
@@ -214,28 +222,36 @@
 							min="1"
 							max="25"
 							step="1"
-							v-model.number="boostersPerPlayer"
+							v-model.number="$root.boostersPerPlayer"
 						/>
 					</div>
 				</div>
-				<div class="option-section" v-bind:class="{ disabled: useCustomCardList }">
-					<div class="option-column-title">
-						Individual Booster Set
-					</div>
-					<div class="line" v-tooltip.right="{classes: 'option-tooltip', content: '<p>Controls how the boosters will be distributed.</p><ul><li>Regular: Each player will receive boosters from the same sets and will open them in the same order.</li><li>Shuffle Player Boosters: Each players will receive boosters from the same sets but will open them in a random order.</li><li>Shuffle Booster Pool: Boosters will be randomly handed to each player.</li></ul>'}">
+				<div class="option-section" v-bind:class="{ disabled: $root.useCustomCardList }">
+					<div class="option-column-title">Individual Booster Set</div>
+					<div
+						class="line"
+						v-tooltip.right="{classes: 'option-tooltip', content: '<p>Controls how the boosters will be distributed.</p><ul><li>Regular: Each player will receive boosters from the same sets and will open them in the same order.</li><li>Shuffle Player Boosters: Each players will receive boosters from the same sets but will open them in a random order.</li><li>Shuffle Booster Pool: Boosters will be randomly handed to each player.</li></ul>'}"
+					>
 						<label for="distribution-mode">Distribution Mode</label>
-						<select class="right" v-model="distributionMode" name="distributionMode" id="distribution-mode">
+						<select
+							class="right"
+							v-model="$root.distributionMode"
+							name="distributionMode"
+							id="distribution-mode"
+						>
 							<option value="regular">Regular</option>
 							<option value="shufflePlayerBoosters">Shuffle Player Boosters</option>
 							<option value="shuffleBoosterPool">Shuffle Booster Pool</option>
 						</select>
 					</div>
-					<div v-tooltip.right="{classes: 'option-tooltip', content: '<p>Specify the set of each booster individually. Useful for classic Chaos Draft for example.</p><p>Note: Collections are ignored for each booster with any other value than (Default).</p>'}" >
-						<div v-for="(value, index) in customBoosters" class="line">
+					<div
+						v-tooltip.right="{classes: 'option-tooltip', content: '<p>Specify the set of each booster individually. Useful for classic Chaos Draft for example.</p><p>Note: Collections are ignored for each booster with any other value than (Default).</p>'}"
+					>
+						<div v-for="(value, index) in customBoosters" :key="index" class="line">
 							<label for="customized-booster">Booster #{{index+1}}</label>
-							<select class="right" v-model="customBoosters[index]">
-								<option value="">(Default)</option>
-								<option v-for="code in sets" :value="code">{{setsInfos[code].fullName}}</option>
+							<select class="right" v-model="$root.customBoosters[index]">
+								<option value>(Default)</option>
+								<option v-for="code in $root.sets" :key="code" :value="code">{{setsInfos[code].fullName}}</option>
 							</select>
 						</div>
 					</div>
@@ -257,7 +273,7 @@
 							min="0"
 							max="24"
 							step="1"
-							v-model.number="burnedCardsPerRound"
+							v-model.number="$root.burnedCardsPerRound"
 						/>
 					</div>
 				</div>
@@ -271,7 +287,7 @@
 				>
 					<label for="draft-log-recipients">Send draft logs to</label>
 					<div class="right">
-						<select v-model="draftLogRecipients" id="draft-log-recipients">
+						<select v-model="$root.draftLogRecipients" id="draft-log-recipients">
 							<option value="everyone">Everyone</option>
 							<option value="owner">Owner only</option>
 							<option value="delayed">Owner only, delayed</option>
@@ -291,29 +307,6 @@ import Swal from "sweetalert2";
 import modal from "./Modal.vue";
 
 export default {
-	computed: mapState({
-		userID: "userID",
-		sets: "sets",
-		setsInfos: "setsInfos",
-		sessionOwner: "sessionOwner",
-
-		isPublic: "isPublic",
-		ownerIsPlayer: "ownerIsPlayer",
-		boostersPerPlayer: "boostersPerPlayer",
-		customBoosters: "customBoosters",
-		maxPlayers: "maxPlayers",
-		mythicPromotion: "mythicPromotion",
-		boosterContent: "boosterContent",
-		colorBalance: "colorBalance",
-		maxDuplicates: "maxDuplicates",
-		foil: "foil",
-		setRestriction: "setRestriction",
-		useCustomCardList: "useCustomCardList",
-		customCardList: "customCardList",
-		burnedCardsPerRound: "burnedCardsPerRound",
-		maxTimer: "maxTimer",
-		draftLogRecipients: "draftLogRecipients",
-	}),
 	methods: {
 		parseCustomCardList: function(e) {
 			let file = e.target.files[0];

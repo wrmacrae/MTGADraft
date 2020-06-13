@@ -12,9 +12,7 @@
 				<div class="inline" v-tooltip="'Controls the display language of cards.'">
 					<label for="language">Language</label>
 					<select v-model="language" name="language">
-						<option v-for="lang in languages" :key="lang.code" v-bind:value="lang.code">
-							{{ lang.name }}
-						</option>
+						<option v-for="lang in languages" :key="lang.code" v-bind:value="lang.code">{{ lang.name }}</option>
 					</select>
 				</div>
 			</span>
@@ -32,9 +30,7 @@
 					v-if="hasCollection"
 					v-tooltip="'Display some statistics about your collection.'"
 					@click="showCollectionStats = true"
-				>
-					Stats
-				</button>
+				>Stats</button>
 				<div
 					v-show="Object.keys(collection).length > 0"
 					class="inline"
@@ -70,15 +66,14 @@
 			</span>
 
 			<span class="generic-container">
-				<div v-show="publicSessions.length == 0" class="disable-warning">
-					(No public sessions)
-				</div>
-				<span :class="{ disabled: drafting || publicSessions.length == 0 }" id="public-session-controls">
+				<div v-show="publicSessions.length == 0" class="disable-warning">(No public sessions)</div>
+				<span
+					:class="{ disabled: drafting || publicSessions.length == 0 }"
+					id="public-session-controls"
+				>
 					<label for="public-sessions">Public sessions</label>
 					<select id="public-sessions" v-model="selectedPublicSession">
-						<option v-for="s in publicSessions" :value="s" :key="s">
-							{{ s }}
-						</option>
+						<option v-for="s in publicSessions" :value="s" :key="s">{{ s }}</option>
 					</select>
 					<input type="button" value="Join" @click="joinPublicSession" />
 				</span>
@@ -124,9 +119,7 @@
 				</span>
 				<span class="generic-container" :class="{ disabled: sessionOwner != userID }">
 					<strong>Session options:</strong>
-					<template v-if="useCustomCardList">
-						Using Custom Card List ({{ customCardList.length }} cards)
-					</template>
+					<template v-if="useCustomCardList">Using Custom Card List ({{ customCardList.length }} cards)</template>
 					<template v-else>
 						<div
 							class="inline"
@@ -141,9 +134,7 @@
 								v-tooltip="
 									'Restricts to the selected sets. No selection means all cards present in Arena.'
 								"
-							>
-								Set(s)
-							</label>
+							>Set(s)</label>
 							<multiselect
 								v-if="setsInfos"
 								v-model="setRestriction"
@@ -153,7 +144,7 @@
 								:allow-empty="true"
 								:close-on-select="false"
 								:multiple="true"
-								select-label=""
+								select-label
 								selected-label=""
 								deselect-label=""
 							>
@@ -162,10 +153,7 @@
 										<img class="set-icon" :src="setsInfos[values[0]].icon" />
 										{{ setsInfos[values[0]].fullName }}
 									</span>
-									<span
-										class="multiselect__single multiselect__single_nooverflow"
-										v-if="values.length > 1"
-									>
+									<span class="multiselect__single multiselect__single_nooverflow" v-if="values.length > 1">
 										({{ values.length }})
 										<img
 											v-for="v in values"
@@ -197,7 +185,9 @@
 						/>
 					</div>
 					<div class="inline" v-tooltip="'Pick Timer (sec.). Zero means no timer.'">
-						<label for="timer"><i class="fas fa-clock"></i></label>
+						<label for="timer">
+							<i class="fas fa-clock"></i>
+						</label>
 						<input
 							type="number"
 							id="timer"
@@ -214,14 +204,13 @@
 					<button
 						@click="startWinstonDraft()"
 						v-tooltip="'Starts a Winston Draft. This is a draft variant for only two players.'"
-					>
-						Winston
-					</button>
+					>Winston</button>
 				</span>
 				<span class="generic-container" :class="{ disabled: sessionOwner != userID }">
-					<button @click="sealedDialog" v-tooltip="'Distributes boosters to everyone for a sealed session.'">
-						Sealed
-					</button>
+					<button
+						@click="sealedDialog"
+						v-tooltip="'Distributes boosters to everyone for a sealed session.'"
+					>Sealed</button>
 				</span>
 				<span
 					v-tooltip="'More session options'"
@@ -234,7 +223,11 @@
 			</div>
 			<div v-show="drafting" id="draft-in-progress">
 				Draft in progress!
-				<button v-if="sessionOwner == userID" class="stop" @click="stopDraft">Stop Draft</button>
+				<button
+					v-if="sessionOwner == userID"
+					class="stop"
+					@click="stopDraft"
+				>Stop Draft</button>
 			</div>
 		</div>
 		<div class="main-controls session-players">
@@ -256,9 +249,9 @@
 				<div class="chat-bubble" :id="'chat-bubble-' + sessionOwner"></div>
 			</div>
 			<div>
-				<span v-tooltip="'Maximum players can be adjusted in session options.'">
-					Players ({{ sessionUsers.length }}/{{ maxPlayers }})
-				</span>
+				<span
+					v-tooltip="'Maximum players can be adjusted in session options.'"
+				>Players ({{ sessionUsers.length }}/{{ maxPlayers }})</span>
 				<i
 					v-if="userID == sessionOwner && !drafting"
 					class="fas fa-random clickable"
@@ -342,10 +335,7 @@
 									<i class="fas fa-times red" v-tooltip="`${user.userName} is NOT ready!`"></i>
 								</template>
 								<template v-else-if="user.readyState == ReadyState.Unknown">
-									<i
-										class="fas fa-spinner fa-spin"
-										v-tooltip="`Waiting on ${user.userName} to respond...`"
-									></i>
+									<i class="fas fa-spinner fa-spin" v-tooltip="`Waiting on ${user.userName} to respond...`"></i>
 								</template>
 							</template>
 						</div>
@@ -401,16 +391,10 @@
 								</template>
 								<template v-else>
 									<template v-if="user.pickedThisRound">
-										<i
-											class="fas fa-check green"
-											v-tooltip="user.userName + ' has picked a card.'"
-										></i>
+										<i class="fas fa-check green" v-tooltip="user.userName + ' has picked a card.'"></i>
 									</template>
 									<template v-else>
-										<i
-											class="fas fa-spinner fa-spin"
-											v-tooltip="user.userName + ' is thinking...'"
-										></i>
+										<i class="fas fa-spinner fa-spin" v-tooltip="user.userName + ' is thinking...'"></i>
 									</template>
 								</template>
 							</div>
@@ -424,16 +408,12 @@
 					@click="shareSavedDraftLog"
 					v-show="savedDraftLog"
 					v-tooltip="'Reveal and share previous draft log with players in your session.'"
-				>
-					Share saved Draft Log
-				</button>
+				>Share saved Draft Log</button>
 				<button
 					@click="displayDraftLog = !displayDraftLog"
 					v-show="draftLog"
 					v-tooltip="'Displays logs of your previous draft'"
-				>
-					Draft Log
-				</button>
+				>Draft Log</button>
 			</div>
 			<div class="chat">
 				<form @submit.prevent="sendChatMessage">
@@ -462,90 +442,18 @@
 								:key="msg.timestamp"
 								:title="new Date(msg.timestamp)"
 							>
-								<span class="chat-author">
-									{{ msg.author in userByID ? userByID[msg.author].userName : "(Left)" }}
-								</span>
+								<span
+									class="chat-author"
+								>{{ msg.author in userByID ? userByID[msg.author].userName : "(Left)" }}</span>
 								<span class="chat-message">{{ msg.text }}</span>
 							</li>
 						</ol>
 					</template>
-					<template v-else>
-						No messages in chat history.
-					</template>
+					<template v-else>No messages in chat history.</template>
 				</div>
 			</div>
 		</div>
-		<template v-if="drafting">
-			<div v-show="draftingState == DraftState.Watching" class="draft-watching">
-				<div class="draft-watching-state">
-					<h1>Players are drafting...</h1>
-					<div v-show="pickTimer >= 0">
-						<i class="fas fa-clock"></i>
-						{{ pickTimer }}
-					</div>
-					<div>Booster #{{ boosterNumber }}, Pick #{{ pickNumber }}</div>
-				</div>
-				<div v-if="draftLog && draftLog.sessionID === sessionID" class="draft-watching-live-log">
-					<draft-log-live :draftlog="draftLog"></draft-log-live>
-				</div>
-			</div>
-			<div v-show="draftingState == DraftState.Waiting" class="pick-waiting">
-				<span class="spinner"></span>
-				<span v-show="pickTimer >= 0">
-					(
-					<i class="fas fa-clock"></i>
-					{{ pickTimer }})
-				</span>
-				Waiting for other players to pick...
-			</div>
-			<div v-show="draftingState == DraftState.Picking" id="booster-container" class="container">
-				<div id="booster-controls" class="controls">
-					<h2>Your Booster</h2>
-					<span>Booster #{{ boosterNumber }}, Pick {{ pickNumber }}</span>
-					<span v-show="pickTimer >= 0" :class="{ redbg: pickTimer <= 10 }" id="chrono">
-						<i class="fas fa-clock"></i>
-						{{ pickTimer }}
-					</span>
-					<input
-						type="button"
-						@click="pickCard"
-						value="Confirm Pick"
-						v-if="
-							selectedCard != undefined &&
-								(burningCards.length === burnedCardsPerRound ||
-									booster.length === 1 + burningCards.length)
-						"
-					/>
-					<span v-else>
-						Pick a card
-						<span v-if="cardsToBurnThisRound > 0">
-							and remove {{ cardsToBurnThisRound }} cards from the pool ({{ burningCards.length }}/{{
-								cardsToBurnThisRound
-							}})
-						</span>
-					</span>
-				</div>
-				<div class="booster card-container">
-					<div
-						is="card"
-						v-for="(card, index) in booster"
-						v-bind:key="`${index}-${card.id}`"
-						v-bind:card="card"
-						v-bind:language="language"
-						v-bind:selectcard="selectCard"
-						v-bind:ondblclick="doubleClickCard"
-						v-bind:selected="selectedCard === card"
-						:canbeburned="burnedCardsPerRound > 0"
-						:burned="burningCards.includes(card)"
-						:burn="burnCard"
-						:restore="restoreCard"
-					></div>
-				</div>
-			</div>
-			<WinstonDraft
-				v-if="draftingState === DraftState.WinstonPicking || draftingState === DraftState.WinstonWaiting"
-			></WinstonDraft>
-		</template>
+		<Draft v-if="drafting"></Draft>
 		<div
 			class="container"
 			v-show="
@@ -568,10 +476,13 @@
 				<button v-if="deck.length > 0" type="button" @click="exportDeck">Export Deck to MTGA</button>
 				<span v-show="draftingState == DraftState.Brewing">
 					<input type="checkbox" id="autoLand" v-model="autoLand" />
-					<label for="autoLand" v-tooltip="'If set, will complete your deck to 40 cards with basic lands.'">
-						Auto. Land
+					<label
+						for="autoLand"
+						v-tooltip="'If set, will complete your deck to 40 cards with basic lands.'"
+					>Auto. Land</label>
+					<label for="white-mana">
+						<img src="img/mana/W.svg" class="mana-icon" />
 					</label>
-					<label for="white-mana"><img src="img/mana/W.svg" class="mana-icon" /></label>
 					<input
 						class="small-number-input"
 						type="number"
@@ -579,7 +490,9 @@
 						v-model.number="lands['W']"
 						min="0"
 					/>
-					<label for="blue-mana"><img src="img/mana/U.svg" class="mana-icon" /></label>
+					<label for="blue-mana">
+						<img src="img/mana/U.svg" class="mana-icon" />
+					</label>
 					<input
 						class="small-number-input"
 						type="number"
@@ -587,7 +500,9 @@
 						v-model.number="lands['U']"
 						min="0"
 					/>
-					<label for="black-mana"><img src="img/mana/B.svg" class="mana-icon" /></label>
+					<label for="black-mana">
+						<img src="img/mana/B.svg" class="mana-icon" />
+					</label>
 					<input
 						class="small-number-input"
 						type="number"
@@ -595,9 +510,19 @@
 						v-model.number="lands['B']"
 						min="0"
 					/>
-					<label for="red-mana"><img src="img/mana/R.svg" class="mana-icon" /></label>
-					<input class="small-number-input" type="number" id="red-mana" v-model.number="lands['R']" min="0" />
-					<label for="green-mana"><img src="img/mana/G.svg" class="mana-icon" /></label>
+					<label for="red-mana">
+						<img src="img/mana/R.svg" class="mana-icon" />
+					</label>
+					<input
+						class="small-number-input"
+						type="number"
+						id="red-mana"
+						v-model.number="lands['R']"
+						min="0"
+					/>
+					<label for="green-mana">
+						<img src="img/mana/G.svg" class="mana-icon" />
+					</label>
 					<input
 						class="small-number-input"
 						type="number"
@@ -637,7 +562,9 @@
 						></figure>
 					</draggable>
 					<div class="draggable-controls">
-						<div @click="addDeckColumn" class="plus-column"><i class="fas fa-plus fa-2x"></i></div>
+						<div @click="addDeckColumn" class="plus-column">
+							<i class="fas fa-plus fa-2x"></i>
+						</div>
 						<div v-show="deckColumn.length > 1" @click="removeDeckColumn" class="minus-column">
 							<i class="fas fa-minus fa-2x"></i>
 						</div>
@@ -729,7 +656,9 @@
 						></figure>
 					</draggable>
 					<div class="draggable-controls">
-						<div @click="addSideboardColumn" class="plus-column"><i class="fas fa-plus fa-2x"></i></div>
+						<div @click="addSideboardColumn" class="plus-column">
+							<i class="fas fa-plus fa-2x"></i>
+						</div>
 						<div v-show="sideboardColumn.length > 1" @click="removeSideboardColumn" class="minus-column">
 							<i class="fas fa-minus fa-2x"></i>
 						</div>
@@ -781,26 +710,9 @@
 				</template>
 			</div>
 		</div>
-		<welcome v-if="draftingState === null"></welcome>
+		<Welcome v-if="draftingState === null"></Welcome>
 		<SessionOptions v-show="modal === 'SessionOptions'"></SessionOptions>
-		<footer>
-			<span @click="displayAbout = true"><a>About</a></span>
-			<span>
-				<input type="file" id="log-input" @change="openLog" style="display:none" accept=".txt" />
-				<a onclick="document.querySelector('#log-input').click()" v-tooltip="'Open a saved draft log.'">
-					Open Draft Log
-				</a>
-			</span>
-			<span>
-				Made by
-				<a href="http://senryoku.github.io/">Senryoku</a>
-			</span>
-			<span><a href="mailto:mtgadraft@gmail.com">Contact</a></span>
-			<span>
-				Get
-				<a href="https://magic.wizards.com/fr/mtgarena">Magic: The Gathering Arena</a>
-			</span>
-		</footer>
+		<Footer></Footer>
 		<div
 			class="disconnected-icon"
 			v-if="socket && socket.disconnected"
@@ -818,7 +730,9 @@
 import Vue from "vue";
 import VTooltip from "v-tooltip";
 import draggable from "vuedraggable";
+import Footer from "./components/Footer.vue";
 import Welcome from "./components/Welcome.vue";
+import Draft from "./components/Draft.vue";
 import SessionOptions from "./components/SessionOptions.vue";
 import { Languages, MTGSets, SwalCustomClasses } from "./constants.js";
 import {
@@ -880,8 +794,10 @@ VTooltip.options.defaultBoundariesElement = "window";
 export default {
 	name: "App",
 	components: {
+		Footer,
 		Welcome,
 		SessionOptions,
+		Draft,
 		Multiselect,
 		draggable,
 	},
@@ -901,6 +817,7 @@ export default {
 			sessionID: getCookie("sessionID", shortguid()),
 			sessionOwner: null,
 			sessionOwnerUsername: null,
+			// Session Options
 			ownerIsPlayer: true,
 			isPublic: false,
 			ignoreCollections: false,
@@ -909,6 +826,7 @@ export default {
 			customBoosters: ["", "", ""],
 			maxPlayers: 8,
 			mythicPromotion: true,
+			distributionMode: "regular",
 			boosterContent: {
 				common: 10,
 				uncommon: 3,
@@ -929,16 +847,11 @@ export default {
 			customCardList: [],
 			burnedCardsPerRound: 0,
 			maxTimer: 75,
-			pickTimer: 75,
 			draftLogRecipients: "everyone",
 			draftLog: undefined,
 			savedDraftLog: false,
 			bracket: null,
 			virtualPlayersData: null,
-			booster: [],
-			boosterNumber: 0,
-			pickNumber: 0,
-			winstonDraftState: null,
 
 			publicSessions: [],
 			selectedPublicSession: "",
@@ -2512,7 +2425,6 @@ export default {
 		},
 	},
 	mounted: async function() {
-		console.log("Coucou");
 		// Load all card informations
 		fetch(require("./assets/data/MTGACards.json")).then(response => {
 			response.text().then(text => {
@@ -2615,7 +2527,7 @@ export default {
 			if (this.userID != this.sessionOwner) return;
 			this.socket.emit("boostersPerPlayer", this.boostersPerPlayer);
 		},
-		distributionMode: function () {
+		distributionMode: function() {
 			if (this.userID != this.sessionOwner) return;
 			this.socket.emit("setDistributionMode", this.distributionMode);
 		},

@@ -17,7 +17,7 @@ Join the discord for development related discussions: https://discord.gg/KYKzx9m
 	npm run serve
 ```
 
-    Navigate to `http://localhost:8080`
+-   Navigate to `http://localhost:8080`
 
 -   For production, build the client that will be served by the node server:
 
@@ -26,7 +26,7 @@ Join the discord for development related discussions: https://discord.gg/KYKzx9m
 	npm run build
 ```
 
-    Navigate to `http://localhost:3000/`
+-   Navigate to `http://localhost:3000/`
 
 ### Setup DynamoDB (local)
 

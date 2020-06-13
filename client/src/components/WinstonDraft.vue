@@ -3,9 +3,7 @@
 		<div class="winston-status">
 			<h2>Winston Draft</h2>
 			<span>
-				<template v-if="userID === winstonDraftState.currentPlayer">
-					Your turn to pick a pile of cards!
-				</template>
+				<template v-if="userID === winstonDraftState.currentPlayer">Your turn to pick a pile of cards!</template>
 				<template v-else>Waiting on {{ userByID[winstonDraftState.currentPlayer].userName }}...</template>
 				There are {{ winstonDraftState.remainingCards }} cards left in the main stack.
 			</span>
@@ -17,7 +15,9 @@
 				class="winston-pile"
 				:class="{ 'winston-current-pile': index === winstonDraftState.currentPile }"
 			>
-				<template v-if="userID === winstonDraftState.currentPlayer && index === winstonDraftState.currentPile">
+				<template
+					v-if="userID === winstonDraftState.currentPlayer && index === winstonDraftState.currentPile"
+				>
 					<div class="card-column winstom-card-column">
 						<figure
 							is="card"
@@ -41,14 +41,25 @@
 							<div class="card-placeholder"></div>
 						</div>
 					</div>
-					<div class="winston-pile-status" v-show="index === winstonDraftState.currentPile">
-						{{ userByID[winstonDraftState.currentPlayer].userName }} is looking at this pile...
-					</div>
+					<div
+						class="winston-pile-status"
+						v-show="index === winstonDraftState.currentPile"
+					>{{ userByID[winstonDraftState.currentPlayer].userName }} is looking at this pile...</div>
 				</template>
 			</div>
 		</div>
 	</div>
 </template>
+
+<script>
+export default {
+	data: function() {
+		return {
+			winstonDraftState: null,
+		};
+	},
+};
+</script>
 
 <style scoped>
 .winston-status {
