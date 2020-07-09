@@ -1,42 +1,49 @@
 
 <template>
-	<div class="bracket" v-if="bracket">
-		<div class="bracket-column" v-for="(col, colIndex) in matches" :key="colIndex">
-			<div v-for="(m, matchIndex) in col" :key="matchIndex" class="bracket-match">
-				<td class="bracket-match-num">{{m.index+1}}</td>
-				<td class="bracket-match-players">
-					<div v-for="(p, index) in m.players" :key="index">
-						<div class="bracket-player bracket-empty" v-if="p.empty">(Empty)</div>
-						<div class="bracket-player bracket-tbd" v-else-if="p.tbd">(TBD {{p.tbd}})</div>
-						<div
-							class="bracket-player"
-							:class="{'bracket-winner': bracket.results[m.index][index] > bracket.results[m.index][(index + 1)%2]}"
-							v-else
-						>
-							<template v-if="colIndex === 2">
-								<i v-if="records[p].wins === 3" class="trophy gold fas fa-trophy"></i>
-								<i v-else-if="records[p].wins === 2" class="trophy silver fas fa-trophy"></i>
-								<div v-else class="trophy"></div>
-							</template>
-							<div class="bracket-player-name" v-tooltip="'Current record: '+recordString(p)">{{p}}</div>
-							<template v-if="m.isValid()">
-								<input
-									v-if="editable"
-									class="result-input"
-									type="number"
-									v-model.number="bracket.results[m.index][index]"
-									min="0"
-									@change="emitUpdated"
-								/>
-								<div class="bracket-result" v-else>{{bracket.results[m.index][index]}}</div>
-							</template>
+	<div>
+		<h2 slot="header">
+			Bracket
+			<button v-if="isOwner" :@click="generateBracket">Re-Generate Single Elimination</button>
+			<button v-if="isOwner" :@click="generateSwissBracket">Re-Generate 3-Round Swiss</button>
+		</h2>
+		<div class="bracket" v-if="bracket">
+			<div class="bracket-column" v-for="(col, colIndex) in matches" :key="colIndex">
+				<div v-for="(m, matchIndex) in col" :key="matchIndex" class="bracket-match">
+					<td class="bracket-match-num">{{m.index+1}}</td>
+					<td class="bracket-match-players">
+						<div v-for="(p, index) in m.players" :key="index">
+							<div class="bracket-player bracket-empty" v-if="p.empty">(Empty)</div>
+							<div class="bracket-player bracket-tbd" v-else-if="p.tbd">(TBD {{p.tbd}})</div>
+							<div
+								class="bracket-player"
+								:class="{'bracket-winner': bracket.results[m.index][index] > bracket.results[m.index][(index + 1)%2]}"
+								v-else
+							>
+								<template v-if="colIndex === 2">
+									<i v-if="records[p].wins === 3" class="trophy gold fas fa-trophy"></i>
+									<i v-else-if="records[p].wins === 2" class="trophy silver fas fa-trophy"></i>
+									<div v-else class="trophy"></div>
+								</template>
+								<div class="bracket-player-name" v-tooltip="'Current record: '+recordString(p)">{{p}}</div>
+								<template v-if="m.isValid()">
+									<input
+										v-if="isOwner"
+										class="result-input"
+										type="number"
+										v-model.number="bracket.results[m.index][index]"
+										min="0"
+										@change="emitUpdated"
+									/>
+									<div class="bracket-result" v-else>{{bracket.results[m.index][index]}}</div>
+								</template>
+							</div>
 						</div>
-					</div>
-				</td>
+					</td>
+				</div>
 			</div>
 		</div>
+		<div v-else>No valid bracket.</div>
 	</div>
-	<div v-else>No valid bracket.</div>
 </template>
 
 <script>
